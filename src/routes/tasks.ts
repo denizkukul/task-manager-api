@@ -1,5 +1,6 @@
 import express = require("express");
 import { getAllTasks, getTask, deleteTask, createTask, updateTask } from "../controllers/tasks";
+
 const router = express.Router();
 
 router.route("/").get(getAllTasks);
