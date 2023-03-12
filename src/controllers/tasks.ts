@@ -2,22 +2,36 @@ import type { Handler } from "express";
 import Task from "../models/Task";
 
 export const getAllTasks: Handler = async (req, res) => {
-    const taskList = await Task.find();
-    res.status(201).send({ taskList });
+    try {
+        const taskList = await Task.find();
+        res.status(200).send({ taskList });
+    }
+    catch (error) {
+        res.status(500).send(error)
+    }
 };
 
 export const createTask: Handler = async (req, res) => {
-    const task = await Task.create(req.body);
-    res.status(201).json({ task });
+    try {
+        const task = await Task.create(req.body);
+        return res.status(201).json({ task });
+    }
+    catch (error) {
+        res.status(500).send(error);
+    }
 }
 
 export const getTask: Handler = async (req, res) => {
     try {
-        const task = await Task.findById(req.params.id)
-        res.status(201).json({ task });
+        const task = await Task.findById(req.params.id);
+        console.log(task);
+
+        if (!task) return res.sendStatus(404);
+        else return res.status(200).json({ task });
     }
     catch (error) {
-        res.status(500).send("task not found");
+        console.log(error);
+        res.status(500).send(error);
     }
 }
 
@@ -27,16 +41,18 @@ export const updateTask: Handler = async (req, res) => {
         res.status(201).json({ task });
     }
     catch (error) {
-        res.status(500).send("task not found");
+        res.status(500).send(error);
     }
 }
 
 export const deleteTask: Handler = async (req, res) => {
     try {
-        const task = await Task.findByIdAndRemove(req.params.id);
-        res.status(201).json({ task });
+        const task = await Task.findByIdAndDelete(req.params.id);
+
+        if (!task) return res.sendStatus(404);
+        res.status(200).json({ task });
     }
     catch (error) {
-        res.status(500).send("task not found");
+        res.status(500).send(error);
     };
 }
