@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const taskSchema = new mongoose.Schema({
     name: {
         type: String,
-        requires: [true, "name is required"],
+        required: [true, "name is required"],
         trim: true
     },
     completed: {
