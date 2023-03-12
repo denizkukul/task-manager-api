@@ -1,5 +1,4 @@
 import { connectDB } from "./db/connect";
-// import bodyParser = require("body-parser");
 import express = require("express");
 import taskHandler from "./routes/tasks";
 import ENV from "./env";
@@ -20,13 +19,12 @@ const start = async () => {
 const app = express();
 
 
-app.use(express.static(path.resolve(__dirname, "client")));
 app.use(express.json());
 
 app.use("/api/v1/task", taskHandler);
 
-// app.all("*", (req, res) => {
-//     res.status(404).send("<h1>Not Found</h1>");
-// });
+app.all("*", (req, res) => {
+    res.status(404).send("Not Found");
+});
 
 start();
